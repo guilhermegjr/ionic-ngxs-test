@@ -1,14 +1,26 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-title>
+			Ionic Blank
+		</ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
-  </div>
+	<h1>New Todo</h1>
+	<ion-list>
+		<ion-item lines="none">
+			<ion-label position="stacked">Todo</ion-label>
+			<ion-input [(ngModel)]="title"></ion-input>
+		</ion-item>
+		<ion-item lines="none">
+			<ion-button (click)="addTodo()" shape="block">Add</ion-button>
+		</ion-item>
+	</ion-list>
+	<h1>Todos</h1>
+	<ion-list>
+		<ion-item *ngFor="let todo of (todos$ | async)">
+			<ion-label>{{ todo.title }}</ion-label>
+		</ion-item>
+	</ion-list>
 </ion-content>
