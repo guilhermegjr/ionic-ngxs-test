@@ -1,26 +1,41 @@
 <ion-header>
-	<ion-toolbar>
+	<ion-toolbar color="primary">
 		<ion-title>
-			Ionic Blank
+			My TODO list
 		</ion-title>
 	</ion-toolbar>
 </ion-header>
 
 <ion-content>
-	<h1>New Todo</h1>
-	<ion-list>
-		<ion-item lines="none">
-			<ion-label position="stacked">Todo</ion-label>
-			<ion-input [(ngModel)]="title"></ion-input>
-		</ion-item>
-		<ion-item lines="none">
-			<ion-button (click)="addTodo()" shape="block">Add</ion-button>
-		</ion-item>
-	</ion-list>
-	<h1>Todos</h1>
-	<ion-list>
-		<ion-item *ngFor="let todo of (todos$ | async)">
-			<ion-label>{{ todo.title }}</ion-label>
-		</ion-item>
-	</ion-list>
+	<ion-card>
+		<ion-card-content>
+			<ion-item>
+				<ion-input [(ngModel)]="title" placeholder="Add a new TODO..."></ion-input>
+			</ion-item>
+			<ion-button (click)="addTodo()" expand="block" [disabled]="!title.length">
+				Add
+			</ion-button>
+		</ion-card-content>
+	</ion-card>
+
+	<ion-card>
+		<ion-card-header>
+			<ion-card-title>Your TODOs</ion-card-title>
+		</ion-card-header>
+
+		<ion-card-content *ngIf="(todos$ | async) as todos">
+			<ion-list>
+				<ion-item *ngFor="let todo of todos">
+					<ion-label>{{ todo.title }}</ion-label>
+					<ion-button slot="end" fill="clear" color="danger" (click)="deleteTodo(todo)">
+						<ion-icon name="trash" slot="icon-only"></ion-icon>
+					</ion-button>
+				</ion-item>
+			</ion-list>
+
+			<p *ngIf="!todos || !todos.length" text-center>
+				You don't have any TODO yet.
+			</p>
+		</ion-card-content>
+	</ion-card>
 </ion-content>

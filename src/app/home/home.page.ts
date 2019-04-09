@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
-import { NewTodo } from '../store/todos/todo.actions';
+import { NewTodo, DeleteTodo } from '../store/todos/todo.actions';
 import { Observable } from 'rxjs';
 import { Todo } from '../models/todo.model';
 import { TodoState } from '../store/todos/todo.state';
+import { ToastController } from '@ionic/angular';
 
 @Component({
 	selector: 'app-home',
@@ -11,10 +12,10 @@ import { TodoState } from '../store/todos/todo.state';
 	styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-	title: string;
+	title: string = '';
 	@Select(TodoState.getTodos) todos$: Observable<Todo>;
 
-	constructor(private store: Store) {}
+	constructor(private store: Store, private toast: ToastController) {}
 
 	addTodo() {
 		this.store
@@ -26,5 +27,12 @@ export class HomePage {
 				})
 			)
 			.subscribe(result => (this.title = ''));
+	}
+
+	deleteTodo(todo: Todo) {
+		this.store.dispatch(new DeleteTodo(todo.id)).subscribe(async () => {
+			const toast = await this.toast.create({ message: 'TODO deleted' });
+			toast.present();
+		});
 	}
 }
